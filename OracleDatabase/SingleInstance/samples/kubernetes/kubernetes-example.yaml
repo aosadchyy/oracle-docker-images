@@ -1,13 +1,8 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: example-namespace
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: oracle-rdbms-oradata
-  namespace: example-namespace
+  namespace: oracledb
   labels:
     app: oracle-rdbms
 spec:
@@ -21,7 +16,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: oracle-rdbms-config
-  namespace: example-namespace
+  namespace: oracledb
   labels:
     app: oracle-rdbms
 data:
@@ -36,7 +31,7 @@ metadata:
   name: oracle-rdbms
   labels:
     app: oracle-rdbms
-  namespace: example-namespace
+  namespace: oracledb
 spec:
   replicas: 1
   selector:
@@ -52,9 +47,10 @@ spec:
       securityContext:
         runAsUser: 54321
         fsGroup: 54321
+      serviceAccountName: oracledb-sa
       containers:
         - name: rdbms
-          image: local-repo/oracle/database:19.3.0-ee
+          image: quay.io/samvelu/ora193s390x:v1
           envFrom:
             - configMapRef:
                 name: oracle-rdbms-config
@@ -93,7 +89,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: database
-  namespace: example-namespace
+  namespace: oracledb
   labels:
     app: oracle-rdbms
 spec:
