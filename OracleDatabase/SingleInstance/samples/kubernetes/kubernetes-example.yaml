@@ -65,7 +65,7 @@ spec:
           - name: oradata
             mountPath: /opt/oracle/oradata
           readinessProbe:
-            initialDelaySeconds: 60
+            initialDelaySeconds: 720
             periodSeconds: 60
             exec:
               command:
@@ -73,7 +73,7 @@ spec:
                 - "-c"
                 - $ORACLE_BASE/$CHECK_DB_FILE
           livenessProbe:
-            initialDelaySeconds: 300
+            initialDelaySeconds: 800
             periodSeconds: 60
             exec:
               command:
